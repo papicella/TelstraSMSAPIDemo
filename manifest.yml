@@ -1,0 +1,9 @@
+applications:
+- name: pas-telstrasmsapi
+  memory: 512M
+  instances: 1
+  host: pas-telstrasmsapi
+  domain: mybluemix.net
+  path: ./target/TelstraSMSAPI-1.0-SNAPSHOT.jar
+  env:
+   JBP_CONFIG_IBMJDK: "version: 1.8.+"

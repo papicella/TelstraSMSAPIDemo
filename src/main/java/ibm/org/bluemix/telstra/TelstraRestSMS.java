@@ -32,6 +32,32 @@ public class TelstraRestSMS
     @RequestMapping(value = "/telstrasms", method = RequestMethod.GET)
     public String sendSms(@RequestParam(value="to", required=true) String to)
     {
+        return sendAnSMS(to, null);
+    }
+
+    @RequestMapping(value = "/telstrasms", method = RequestMethod.POST)
+    public String sendSmsPost(@RequestParam(value="to", required=true) String to,
+                              @RequestParam(value="body", required=true) String body)
+    {
+
+        return sendAnSMS(to, body);
+    }
+
+    private String sendAnSMS (String to, String body)
+    {
+        String requestJson = null;
+
+        if (body == null)
+        {
+            log.info("HTTP GET");
+            requestJson = String.format("{\"to\":\"%s\", \"body\":\"Hello, pas sent this message from telstra SMS api on IBM Bluemix!\"}", to);
+        }
+        else
+        {
+            log.info("HTTP POST");
+            requestJson = String.format("{\"to\":\"%s\", \"body\":\"%s\"}", to, body);
+        }
+
         RestTemplate restTemplate = new RestTemplate();
 
         String jsonResponse =
@@ -48,7 +74,7 @@ public class TelstraRestSMS
         log.info("Access Token for SMS API is - " + accessToken);
 
         String url = "https://api.telstra.com/v1/sms/messages";
-        String requestJson = String.format("{\"to\":\"%s\", \"body\":\"Hello, pas sent this message from telstra SMS api on IBM Bluemix!\"}", to);
+
         log.info(requestJson);
 
         HttpHeaders headers = new HttpHeaders();
